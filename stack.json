@@ -1,0 +1,164 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "WebpageTest": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "AvailabilityZone": "eu-west-1b",
+        "DisableApiTermination": "FALSE",
+        "ImageId": "ami-c1aaabb5",
+        "InstanceType": "t1.micro",
+        "KeyName": "adh-webperf",
+        "Monitoring": "false",
+        "SecurityGroups": [
+          {
+            "Ref": "sgwebpagetest"
+          }
+        ],
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "WebpageTest"
+          },
+          {
+            "Key" : "Role",
+            "Value": "WebpageTest"
+          }
+        ],
+        "UserData": { "Fn::Base64": { "Fn::Join" : ["", [
+          "#!/bin/bash -ex\n",
+          "touch userdatawashere.txt\n",
+          "aptitude -y install unzip\n",
+          "aptitude -y install apache2\n",
+          "aptitude -y install php5\n",
+          "aptitude -y install libapache2-mod-php5\n",
+          "aptitude -y install php5-gd\n",
+          "aptitude -y install php5-curl\n",
+
+          "wget http://webpagetest.googlecode.com/files/webpagetest_2.9.zip\n",
+          "unzip webpagetest_2.9.zip\n",
+          "rm -rf /var/www\n",
+          "cp -r www/ /var\n",
+          "chmod -R 777 /var/www",
+
+          "/etc/init.d/apache2 restart\n"
+
+        ]]}}
+      }
+    },
+
+    "AgentIE9": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "AvailabilityZone": "eu-west-1b",
+        "DisableApiTermination": "FALSE",
+        "ImageId": "ami-33b98747",
+        "InstanceType": "m1.small",
+        "KeyName": "adh-webperf",
+        "Monitoring": "false",
+        "SecurityGroups": [
+          {
+            "Ref": "sgtestagent"
+          }
+        ],
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Agent - IE9"
+          },
+          {
+            "Key" : "Role",
+            "Value": "Agent"
+          }
+       ],
+        "UserData": { "Fn::Base64": { "Fn::Join" : ["", [
+          "wpt_server=",
+          { "Fn::GetAtt" : [ "WebpageTest", "PublicDnsName" ] },
+          " ",
+          "wpt_location=EU_WEST"
+        ]]}}
+      }
+    },
+
+    "AgentIE8": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "AvailabilityZone": "eu-west-1b",
+        "DisableApiTermination": "FALSE",
+        "ImageId": "ami-00b18074",
+        "InstanceType": "m1.small",
+        "KeyName": "adh-webperf",
+        "Monitoring": "false",
+        "SecurityGroups": [
+          {
+            "Ref": "sgtestagent"
+          }
+        ],
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Agent - IE8"
+          },
+          {
+            "Key" : "Role",
+            "Value": "Agent"
+          }
+       ],
+        "UserData": { "Fn::Base64": { "Fn::Join" : ["", [
+          "wpt_server=",
+          { "Fn::GetAtt" : [ "WebpageTest", "PublicDnsName" ] },
+          " ",
+          "wpt_location=EU_WEST_IE8"
+        ]]}}
+      }
+    },
+
+    "sgtestagent": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Group for machines running test browsers",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "sgwebpagetest": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Group for machines running webpagetest",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    }
+  },
+  "Description": "Create a webperf stack in Ireland"
+}
