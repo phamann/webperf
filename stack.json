@@ -1,5 +1,24 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Parameters" : {
+    "S3UploadBucket" : {
+      "Description" : "Name of an S3 bucket to upload results to",
+      "Default": "wpt-results",
+      "Type" : "String"
+    },
+    "S3AccessKey" : {
+      "Description" : "S3 access key",
+      "NoEcho": "true",
+      "Type" : "String"
+    },
+    "S3SecretKey" : {
+      "Description" : "S3 secret key",
+      "NoEcho": "true",
+      "Type" : "String"
+    }
+  }, 
+
   "Resources": {
     "WebpageTest": {
       "Type": "AWS::EC2::Instance",
@@ -39,7 +58,17 @@
           "unzip webpagetest_2.9.zip\n",
           "rm -rf /var/www\n",
           "cp -r www/ /var\n",
-          "chmod -R 777 /var/www",
+          "chmod -R 777 /var/www\n",
+
+          "wget https://raw.github.com/ahume/webperf/master/locations.ini\n",
+          "cp locations.ini /var/www/settings/locations.ini\n",
+
+          "wget https://raw.github.com/ahume/webperf/master/settings.ini\n",
+          "sed -i 's/<S3:accesskey>/", { "Ref" : "S3AccessKey" }, "/g' settings.ini.sample\n",
+          "sed -i 's/<S3:secretkey>/", { "Ref" : "S3SecretKey" }, "/g' settings.ini.sample\n",
+          "sed -i 's/<S3:uploadbucket>/", { "Ref" : "S3UploadBucket" }, "/g' settings.ini.sample\n",
+          "cp locations.ini /var/www/settings/settings.ini\n",
+
 
           "/etc/init.d/apache2 restart\n"
 
