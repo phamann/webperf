@@ -47,6 +47,7 @@
         "UserData": { "Fn::Base64": { "Fn::Join" : ["", [
           "#!/bin/bash -ex\n",
           "touch userdatawashere.txt\n",
+          "aptitude -y update\n",
           "aptitude -y install unzip\n",
           "aptitude -y install apache2\n",
           "aptitude -y install php5\n",
