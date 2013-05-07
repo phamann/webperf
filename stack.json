@@ -64,10 +64,10 @@
           "cp locations.ini /var/www/settings/locations.ini\n",
 
           "wget https://raw.github.com/ahume/webperf/master/settings.ini\n",
-          "sed -i 's/<S3:accesskey>/", { "Ref" : "S3AccessKey" }, "/g' settings.ini.sample\n",
-          "sed -i 's/<S3:secretkey>/", { "Ref" : "S3SecretKey" }, "/g' settings.ini.sample\n",
-          "sed -i 's/<S3:uploadbucket>/", { "Ref" : "S3UploadBucket" }, "/g' settings.ini.sample\n",
-          "cp locations.ini /var/www/settings/settings.ini\n",
+          "sed -i 's/<S3:accesskey>/", { "Ref" : "S3AccessKey" }, "/g' settings.ini\n",
+          "sed -i 's/<S3:secretkey>/", { "Ref" : "S3SecretKey" }, "/g' settings.ini\n",
+          "sed -i 's/<S3:uploadbucket>/", { "Ref" : "S3UploadBucket" }, "/g' settings.ini\n",
+          "cp settings.ini /var/www/settings/settings.ini\n",
 
 
           "/etc/init.d/apache2 restart\n"
