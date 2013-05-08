@@ -27,7 +27,7 @@
         "DisableApiTermination": "FALSE",
         "ImageId": "ami-c1aaabb5",
         "InstanceType": "t1.micro",
-        "KeyName": "adh-webperf",
+        "KeyName": "ph-webperf",
         "Monitoring": "false",
         "SecurityGroups": [
           {
@@ -49,14 +49,18 @@
           "touch userdatawashere.txt\n",
           "aptitude -y update\n",
           "aptitude -y install unzip\n",
+          "aptitude -y install ffmpeg\n",
           "aptitude -y install apache2\n",
           "aptitude -y install php5\n",
           "aptitude -y install libapache2-mod-php5\n",
           "aptitude -y install php5-gd\n",
           "aptitude -y install php5-curl\n",
+          "aptitude -y install php5-zip\n",
+          "aptitude -y install php5-zlib\n",
+          "aptitude -y install php5-ffmpeg\n",
 
-          "wget http://webpagetest.googlecode.com/files/webpagetest_2.9.zip\n",
-          "unzip webpagetest_2.9.zip\n",
+          "wget http://webpagetest.googlecode.com/files/webpagetest_2.11.zip\n"
+          "unzip webpagetest_2.11.zip\n",
           "rm -rf /var/www\n",
           "cp -r www/ /var\n",
           "chmod -R 777 /var/www\n",
@@ -82,9 +86,9 @@
       "Properties": {
         "AvailabilityZone": "eu-west-1b",
         "DisableApiTermination": "FALSE",
-        "ImageId": "ami-33b98747",
+        "ImageId": "ami-8b2c2fff",
         "InstanceType": "m1.small",
-        "KeyName": "adh-webperf",
+        "KeyName": "ph-webperf",
         "Monitoring": "false",
         "SecurityGroups": [
           {
@@ -117,7 +121,7 @@
         "DisableApiTermination": "FALSE",
         "ImageId": "ami-00b18074",
         "InstanceType": "m1.small",
-        "KeyName": "adh-webperf",
+        "KeyName": "ph-webperf",
         "Monitoring": "false",
         "SecurityGroups": [
           {
