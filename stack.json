@@ -65,10 +65,10 @@
           "cp -r www/ /var\n",
           "chmod -R 777 /var/www\n",
 
-          "wget https://raw.github.com/ahume/webperf/master/locations.ini\n",
+          "wget https://raw.github.com/phamann/webperf/master/locations.ini\n",
           "cp locations.ini /var/www/settings/locations.ini\n",
 
-          "wget https://raw.github.com/ahume/webperf/master/settings.ini\n",
+          "wget https://raw.github.com/phamann/webperf/master/settings.ini\n",
           "sed -i 's/<S3:accesskey>/", { "Ref" : "S3AccessKey" }, "/g' settings.ini\n",
           "sed -i 's/<S3:secretkey>/", { "Ref" : "S3SecretKey" }, "/g' settings.ini\n",
           "sed -i 's/<S3:uploadbucket>/", { "Ref" : "S3UploadBucket" }, "/g' settings.ini\n",
