@@ -58,8 +58,9 @@
           "aptitude -y install php5-zip\n",
           "aptitude -y install php5-zlib\n",
           "aptitude -y install php5-ffmpeg\n",
+          "aptitude -y install php-apc\n",
 
-          "wget http://webpagetest.googlecode.com/files/webpagetest_2.11.zip\n"
+          "wget http://webpagetest.googlecode.com/files/webpagetest_2.11.zip\n",
           "unzip webpagetest_2.11.zip\n",
           "rm -rf /var/www\n",
           "cp -r www/ /var\n",
@@ -74,6 +75,8 @@
           "sed -i 's/<S3:uploadbucket>/", { "Ref" : "S3UploadBucket" }, "/g' settings.ini\n",
           "cp settings.ini /var/www/settings/settings.ini\n",
 
+          "sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 50M/g' /etc/php5/apache2/php.ini",
+          "sed -i 's/post_max_size = 8M/post_max_size = 50M/g' /etc/php5/apache2/php.ini",
 
           "/etc/init.d/apache2 restart\n"
 
